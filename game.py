@@ -9,7 +9,7 @@ import pygame
 from pygame.locals import *
 
 print("Flappy file")
-show_sensors = True
+show_sensors = False
 FPS = 60
 SCREENWIDTH  = 288
 SCREENHEIGHT = 512
@@ -87,16 +87,16 @@ IMAGES['message'] = pygame.image.load('assets/sprites/message.png').convert_alph
 IMAGES['base'] = pygame.image.load('assets/sprites/base.png').convert_alpha()
 
 # sounds
-if 'win' in sys.platform:
-    soundExt = '.wav'
-else:
-    soundExt = '.ogg'
+# if 'win' in sys.platform:
+#     soundExt = '.wav'
+# else:
+#     soundExt = '.ogg'
 
-SOUNDS['die']    = pygame.mixer.Sound('assets/audio/die' + soundExt)
-SOUNDS['hit']    = pygame.mixer.Sound('assets/audio/hit' + soundExt)
-SOUNDS['point']  = pygame.mixer.Sound('assets/audio/point' + soundExt)
-SOUNDS['swoosh'] = pygame.mixer.Sound('assets/audio/swoosh' + soundExt)
-SOUNDS['wing']   = pygame.mixer.Sound('assets/audio/wing' + soundExt)
+# SOUNDS['die']    = pygame.mixer.Sound('assets/audio/die' + soundExt)
+# SOUNDS['hit']    = pygame.mixer.Sound('assets/audio/hit' + soundExt)
+# SOUNDS['point']  = pygame.mixer.Sound('assets/audio/point' + soundExt)
+# SOUNDS['swoosh'] = pygame.mixer.Sound('assets/audio/swoosh' + soundExt)
+# SOUNDS['wing']   = pygame.mixer.Sound('assets/audio/wing' + soundExt)
     
 
 class Game(object):
@@ -183,7 +183,7 @@ class Game(object):
             if self.playery > -2 * IMAGES['player'][0].get_height():
                 self.playerVelY = self.playerFlapAcc
                 self.playerFlapped = True
-                SOUNDS['wing'].play()
+                # SOUNDS['wing'].play()
                 
         crashTest = checkCrash({'x': self.playerx, 'y': self.playery, 'index': self.playerIndex},
                                self.upperPipes, self.lowerPipes)
@@ -196,7 +196,7 @@ class Game(object):
             pipeMidPos = pipe['x'] + IMAGES['pipe'][0].get_width() / 2
             if pipeMidPos <= playerMidPos < pipeMidPos + 4:
                 self.score += 1
-                SOUNDS['point'].play()
+                # SOUNDS['point'].play()
 
         # playerIndex basex change
         if (self.loopIter + 1) % 3 == 0:
@@ -260,7 +260,10 @@ class Game(object):
         
         readings.append(self.playerVelY)
         readings.append(reg)
-        return readings, reward
+        done = False
+        if reward < 0:
+            done = True
+        return readings, reward, done
     
     
     def get_sonar_readings(self, x, y, upperPipes, lowerPipes):
@@ -476,15 +479,16 @@ if __name__ == '__main__':
     while run:
         action = 0
         game.init_elements()
-        while run:    
+        done = False
+        while not (done):    
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == K_SPACE:
                         game.frame_step(1)
-            state, reward = game.frame_step(0)
-            print(state, " with reward = ",reward)
+            sense, reward, done = game.frame_step(0)
+            print(sense, " with reward = ",reward)
             view = pygame.surfarray.array3d(SCREEN)[:,:404,:]
             # print(view.shape)
     pygame.quit()
