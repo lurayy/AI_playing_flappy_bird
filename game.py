@@ -10,11 +10,11 @@ from pygame.locals import *
 
 print("Flappy file")
 show_sensors = False
-FPS = 60
+FPS = 30
 SCREENWIDTH  = 288
 SCREENHEIGHT = 512
 # amount by which base can maximum shift to left
-PIPEGAPSIZE  = 150 # gap between upper and lower part of pipe
+PIPEGAPSIZE  = 106 # gap between upper and lower part of pipe
 BASEY        = SCREENHEIGHT * 0.79
 # image, sound and hitmask  dicts
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}

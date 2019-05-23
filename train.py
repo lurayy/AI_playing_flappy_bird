@@ -16,8 +16,8 @@ learning_rate = 0.001
 discount_rate = 0.95
 memory_size = 1000000
 batch_size = 20
-exploration_max = 1.0
-exploration_min = 0.01
+exploration_max = 0.01
+exploration_min = 0.0001
 exploration_decay = 0.995
 
 
