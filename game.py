@@ -14,7 +14,7 @@ FPS = 60
 SCREENWIDTH  = 288
 SCREENHEIGHT = 512
 # amount by which base can maximum shift to left
-PIPEGAPSIZE  = 100 # gap between upper and lower part of pipe
+PIPEGAPSIZE  = 150 # gap between upper and lower part of pipe
 BASEY        = SCREENHEIGHT * 0.79
 # image, sound and hitmask  dicts
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
@@ -175,7 +175,24 @@ class Game(object):
         self.playerAccY    =   1   # players downward accleration
         self.playerFlapAcc =  -9   # players speed on flapping
         self.playerFlapped = False # True when player flaps
-                
+        
+        readings = []
+        reg = -5
+        if self.playery > (SCREENHEIGHT - BASEY)/3:
+            if self.playery < 2*(SCREENHEIGHT - BASEY)/3:
+                reg = 0
+            else:
+                reg = 5
+        
+        
+        x = self.get_sonar_readings(self.playerx, self.playery, self.upperPipes, self.lowerPipes)
+        for sense in x:
+            readings.append(sense)
+        readings.append(self.playerVelY)
+        readings.append(reg)
+        done = False
+        reward = 0
+        return readings,reward, done    
         
     def frame_step(self,mv):
         reward = 1
@@ -195,7 +212,8 @@ class Game(object):
         for pipe in self.upperPipes:
             pipeMidPos = pipe['x'] + IMAGES['pipe'][0].get_width() / 2
             if pipeMidPos <= playerMidPos < pipeMidPos + 4:
-                self.score += 1
+                self.score += 1 
+                reward +=50
                 # SOUNDS['point'].play()
 
         # playerIndex basex change
@@ -261,7 +279,7 @@ class Game(object):
         readings.append(self.playerVelY)
         readings.append(reg)
         done = False
-        if reward < 0:
+        if reward == -1000:
             done = True
         return readings, reward, done
     
@@ -490,22 +508,6 @@ if __name__ == '__main__':
             sense, reward, done = game.frame_step(0)
             print(sense, " with reward = ",reward)
             view = pygame.surfarray.array3d(SCREEN)[:,:404,:]
-            # print(view.shape)
     pygame.quit()
-    # start main game loop
-    # while run:
-    #     game.init_elements()
-    #     # game event listing for input
-    #     action = 0
-    #     for event in pygame.event.get():
-    #         action = 0
-    #         if event.type == pygame.QUIT:
-    #             run = False
-    #             break
-    #         if event.type == K_SPACE:
-    #             print("Spaced")
-    #             action = 1
-    #     readings, reward = game.frame_step(action)
-    #     print(readings, " with reward ", reward)
     
             
