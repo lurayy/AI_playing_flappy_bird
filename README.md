@@ -15,7 +15,11 @@ python3 train.py
 ```
 
 #### Play using trained model : 
-``` python3 play.py ```
+``` 
+python3 play.py 
+```
 
 #### Play the game : 
-``` python3 game.py ```
+``` 
+python3 game.py 
+```
