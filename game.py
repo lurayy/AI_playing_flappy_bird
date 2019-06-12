@@ -9,12 +9,12 @@ import pygame
 from pygame.locals import *
 
 print("Flappy file")
-show_sensors = False
-FPS = 30
+show_sensors = True
+FPS = 24
 SCREENWIDTH  = 288
 SCREENHEIGHT = 512
 # amount by which base can maximum shift to left
-PIPEGAPSIZE  = 106 # gap between upper and lower part of pipe
+PIPEGAPSIZE  = 100 # gap between upper and lower part of pipe
 BASEY        = SCREENHEIGHT * 0.79
 # image, sound and hitmask  dicts
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
@@ -294,21 +294,32 @@ class Game(object):
         in a sonar "arm" is non-zero, then that arm returns a distance of 5.
         """
         # Make our arms.
-        arm_small = self.make_sonar_arm(x, y, 8)
-        arm_med = self.make_sonar_arm(x, y, 10)
-        arm_med2 = self.make_sonar_arm(x, y, 12)
-        arm_big = self.make_sonar_arm(x, y, 4)
+        # arm_small = self.make_sonar_arm(x, y, 8)
+        # arm_med = self.make_sonar_arm(x, y, 10)
+        # arm_med2 = self.make_sonar_arm(x, y, 12)
+        arm_big = self.make_sonar_arm(x, y, 12)
 
         # Rotate them and get readings.
         readings.append(self.get_arm_distance(arm_big, x, y, 1.56, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_med2, x, y, 1, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_med, x, y, 0.75, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_small, x, y, 0.45, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_small, x, y, 0, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_small, x, y, -0.45, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_med, x, y, -0.75, upperPipes, lowerPipes))
-        readings.append(self.get_arm_distance(arm_med2, x, y, -1, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, 1, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, 1.27, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, 0.75, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, 0.45, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, 0, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, -0.45, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, -0.75, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, -1, upperPipes, lowerPipes))
+        readings.append(self.get_arm_distance(arm_big, x, y, -1.27, upperPipes, lowerPipes))
         readings.append(self.get_arm_distance(arm_big, x, y, -1.56, upperPipes, lowerPipes))
+                
+        # readings.append(self.get_arm_distance(arm_med2, x, y, 1, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_med, x, y, 0.75, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_small, x, y, 0.45, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_small, x, y, 0, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_small, x, y, -0.45, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_med, x, y, -0.75, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_med2, x, y, -1, upperPipes, lowerPipes))
+        # readings.append(self.get_arm_distance(arm_big, x, y, -1.56, upperPipes, lowerPipes))
         
         return readings
     

@@ -6,7 +6,7 @@ from deep_q_network import Agent
 if __name__ == "__main__":
     game = Game()
 
-    observation_space = 11
+    observation_space = 13
     action_space = 2 
     episodes = 300
     render = False
@@ -19,6 +19,7 @@ if __name__ == "__main__":
         done = False
         total_reward = 0
         quit = False
+        save_file_name = "dqn_with_er"
         while not (done):
             readings = np.reshape(readings,(1,observation_space))
             total_reward += rewards
@@ -39,8 +40,9 @@ if __name__ == "__main__":
                     done = True
 
         if (episode % 50 == 0):
-            agent.save()
+            agent.save(save_file_name)
         if (quit):
             break
     agent.save_collected_data(episodes, total_rewards)
+    agent.save(save_file_name)
     pygame.quit()
