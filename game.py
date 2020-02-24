@@ -520,5 +520,3 @@ if __name__ == '__main__':
             print(sense, " with reward = ",reward)
             view = pygame.surfarray.array3d(SCREEN)[:,:404,:]
     pygame.quit()
-    
-            
